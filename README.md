@@ -18,7 +18,7 @@ Uses ntfy to get mobile notifications of new properties listed.
 
 Modify your preferences in settings and input a custom name for a ntfy channel if you are planning on using ntfy (no sign up required, very easy to set up). It can be a bit annoying to configure for each of the websites, going to work on this to try have one setting for all three. Should probably make a tool to generate the config.
 
-To set up configuration run `irish_property_finder_add_config`. You will be asked questions about how things should be filtered, a config file will be made for when you run the following commands.
+To set up configuration run `irish_property_finder_add_config`. You will be asked questions about how things should be filtered.
 
 To print out all listings per config run `irish_property_find`
 
