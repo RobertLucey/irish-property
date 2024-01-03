@@ -31,9 +31,7 @@ class DaftListing(Listing):
     def parse_floor_area(cls, obj) -> float | None:
         return (
             float(obj.floorArea["value"])
-            if all(
-                [hasattr(obj, "floorArea"), obj.floorArea["unit"] == "METRES_SQUARED"]
-            )
+            if hasattr(obj, "floorArea") and obj.floorArea["unit"] == "METRES_SQUARED"
             else None
         )
 
