@@ -2,6 +2,7 @@ import requests
 
 import bs4
 
+from irish_property import logger
 from irish_property.listing import Listing
 
 
@@ -191,14 +192,23 @@ class PropertyIECli:
                         additional_info.find("Agent:") + 6 : additional_info.find("PSR")
                     ].strip()
 
-                    photo_count_text = soup.find_all("span", {"class": "p1 pb_link"})[
-                        -1
-                    ].text
-                    photo_count = "1"
-                    if "&" in photo_count_text:
-                        photo_count = photo_count_text[
-                            photo_count_text.find("&") + 2 :
-                        ].split(" ")[0]
+                    try:
+                        photo_count_text = soup.find_all(
+                            "span", {"class": "p1 pb_link"}
+                        )[-1].text
+                        photo_count = "1"
+                        if "&" in photo_count_text:
+                            photo_count = photo_count_text[
+                                photo_count_text.find("&") + 2 :
+                            ].split(" ")[0]
+                    except:
+                        try:
+                            photo_count = soup.find(
+                                "span", {"id": "pbxl_total_photos"}
+                            ).text
+                        except:
+                            logger.warning(f'Could not get photo count for {listing.url}')
+                            photo_count = "0"
 
                     listing.image_count = int(photo_count)
 

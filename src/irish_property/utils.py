@@ -116,7 +116,7 @@ def get_daft(config: Enum) -> List[Listing]:
 def get_property(config: Enum) -> List[Listing]:
     logger.info("Getting Property.ie results")
     clean_listings = []
-    listings = PropertyIECli.search(config=config)
+    listings = PropertyIECli().search(config=config)
     for listing in listings:
         if not listing.should_filter_out:
             clean_listings.append(listing)
