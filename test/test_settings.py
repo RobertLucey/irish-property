@@ -55,7 +55,7 @@ class SettingsTest(TestCase):
             "NTFY_SHORTLIST_TOPIC": "unittest_config_shortlist_topic",
         },
     )
-    def test_get_configs(self, patch_get_json, patch_listdir):
+    def test_get_configs_good(self, patch_get_json, patch_listdir):
         configs = list(get_configs())
         self.assertEqual(
             [d for d in dir(configs[0]) if d.isupper()],
@@ -81,7 +81,7 @@ class SettingsTest(TestCase):
                 "PROPERTY_IE_PROPERTY_TYPES",
             ],
         )
-        self.assertIsInstance(configs[0].MYHOME_REGION, MYHOME_REGION)
+        self.assertEqual(configs[0].MYHOME_REGION.value, 1406)
 
     @patch("os.listdir", return_value=[])
     def test_get_configs(self, patch_listdir):

@@ -1,5 +1,3 @@
-from enum import Enum
-
 from unittest import TestCase
 
 from irish_property.daft_listing import DaftListing

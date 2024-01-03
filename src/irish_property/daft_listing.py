@@ -8,7 +8,7 @@ class DaftListing(Listing):
         super(DaftListing, self).__init__(*args, **kwargs)
 
     @classmethod
-    def get_media_urls(cls, obj):
+    def get_media_urls(cls, obj) -> list:
         media_urls = []
         if "images" in obj.media:
             desired_size = max(
@@ -19,34 +19,34 @@ class DaftListing(Listing):
                 ]
             )
             for block in obj.media["images"]:
-                caption = block.get("caption", "no caption")
-
                 for key, value in block.items():
                     if not key.replace("size", "").split("x")[0] == desired_size:
                         continue
-                    if not "x" in key:
+                    if "x" not in key:
                         continue
                     media_urls.append(value)
         return media_urls
 
     @classmethod
-    def parse_floor_area(cls, obj):
+    def parse_floor_area(cls, obj) -> float | None:
         return (
             float(obj.floorArea["value"])
-            if hasattr(obj, "floorArea") and obj.floorArea["unit"] == "METRES_SQUARED"
+            if all(
+                [hasattr(obj, "floorArea"), obj.floorArea["unit"] == "METRES_SQUARED"]
+            )
             else None
         )
 
     @classmethod
-    def parse_constructed_date(cls, obj):
+    def parse_constructed_date(cls, obj) -> int | None:
         return (
             int(obj.dateOfConstruction)
-            if hasattr(obj, "dateOfConstruction") and obj.dateOfConstruction != "NA"
+            if all([hasattr(obj, "dateOfConstruction"), obj.dateOfConstruction != "NA"])
             else None
         )
 
     @classmethod
-    def parse(cls, obj, config=None):
+    def parse(cls, obj, config=None) -> Listing:
         media_urls = DaftListing.get_media_urls(obj)
 
         floor_area = DaftListing.parse_floor_area(obj)
@@ -91,11 +91,11 @@ class DaftListing(Listing):
         return self._obj.description
 
     @property
-    def county(self) -> str:
+    def county(self) -> str | None:
         if self._county is not None:
             return self._county
 
         try:
             return self._obj.county[0]
-        except:
+        except IndexError:
             return

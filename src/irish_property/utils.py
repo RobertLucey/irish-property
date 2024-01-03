@@ -1,8 +1,8 @@
-import time
 import json
 from typing import List
 from enum import Enum
 import urllib.parse
+import cachetools.func
 
 import requests
 from thefuzz import fuzz
@@ -81,7 +81,7 @@ def clean_address(address: str) -> str:
     return address.strip()
 
 
-def get_myhome(config: Enum = None) -> List[Listing]:
+def get_myhome(config: Enum) -> List[Listing]:
     logger.info("Getting MyHome.ie results")
     clean_listings = []
     api = MyHomeCli()
@@ -93,7 +93,7 @@ def get_myhome(config: Enum = None) -> List[Listing]:
     return clean_listings
 
 
-def get_daft(config: Enum = None) -> List[Listing]:
+def get_daft(config: Enum) -> List[Listing]:
     logger.info("Getting Daft.ie results")
     clean_listings = []
     options = [  # TODO: more options, FacilitiesOption
@@ -113,7 +113,7 @@ def get_daft(config: Enum = None) -> List[Listing]:
     return clean_listings
 
 
-def get_property(config: Enum = None) -> List[Listing]:
+def get_property(config: Enum) -> List[Listing]:
     logger.info("Getting Property.ie results")
     clean_listings = []
     listings = PropertyIECli.search(config=config)
@@ -174,15 +174,15 @@ def dedup_listings(listings: List[Listing]) -> List[Listing]:
     return deduped_listings
 
 
-def get_listings(config: Enum = None) -> List[Listing]:
+def get_listings(config: Enum) -> List[Listing]:
     clean_listings = []
 
     if config.USE_DAFT.value:
-        clean_listings.extend(get_daft(config=config))
+        clean_listings.extend(get_daft(config))
     if config.USE_MYHOME.value:
-        clean_listings.extend(get_myhome(config=config))
+        clean_listings.extend(get_myhome(config))
     if config.USE_PROPERTY_IE.value:
-        clean_listings.extend(get_property(config=config))
+        clean_listings.extend(get_property(config))
 
     clean_listings = sorted(clean_listings, key=lambda x: x.address)
 
@@ -191,9 +191,6 @@ def get_listings(config: Enum = None) -> List[Listing]:
         return dedup_listings(clean_listings)
 
     return clean_listings
-
-
-import cachetools.func
 
 
 @cachetools.func.ttl_cache(maxsize=128, ttl=300)

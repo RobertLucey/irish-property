@@ -4,13 +4,11 @@ import argparse
 import shelve
 import time
 
-import requests
 import gspread
 
 from irish_property import logger
 from irish_property.utils import get_listings, add_to_spreadsheet, notify
 from irish_property.settings import SHELVE_LOCATION, get_configs
-from irish_property.listing import Listing
 
 
 def process_listing(config, listing):
@@ -52,7 +50,7 @@ def run():
             logger.info(f"NTFY not set up for config {config.NAME.value}, skipping")
 
         try:
-            listings = get_listings(config=config)
+            listings = get_listings(config)
             logger.info(f"Got {len(listings)} listings for config: {config.NAME.value}")
             for listing in listings:
                 process_listing(config, listing)

@@ -1,5 +1,6 @@
 import os
 import argparse
+import shelve
 
 from irish_property import logger
 from irish_property.settings import SHELVE_LOCATION

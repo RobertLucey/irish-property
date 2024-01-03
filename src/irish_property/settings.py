@@ -1,6 +1,5 @@
 import os
 import json
-import random
 from pathlib import Path
 from enum import Enum
 from typing import List
@@ -19,7 +18,7 @@ DATA_LOCATION = os.getenv("DATA_LOCATION", "/opt/irish_property")
 SHELVE_LOCATION = os.getenv(
     "SHELVE_LOCATION", os.path.join(DATA_LOCATION, "shelved_data")
 )
-CONFIGS_LOCATION = os.getenv("SHELVE_LOCATION", os.path.join(DATA_LOCATION, "configs"))
+CONFIGS_LOCATION = os.getenv("CONFIGS_LOCATION", os.path.join(DATA_LOCATION, "configs"))
 
 os.makedirs(CONFIGS_LOCATION, exist_ok=True)
 
@@ -29,7 +28,7 @@ def get_json(fp):
     try:
         with open(fp, "r") as fh:
             data = json.loads(fh.read())
-    except Exception as ex:
+    except Exception:
         from irish_property import logger
 
         logger.error(f"Failed to load config: {fp}")

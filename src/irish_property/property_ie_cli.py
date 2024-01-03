@@ -1,5 +1,4 @@
 import requests
-import backoff
 
 import bs4
 
@@ -44,7 +43,7 @@ class PropertyListing(Listing):
 
         if (
             self.config.OLDEST_CONSTRUCTED_DATE.value is not None
-            and self.constructed_date != None
+            and self.constructed_date is not None
             and int(self.constructed_date) < self.config.OLDEST_CONSTRUCTED_DATE.value
         ):
             return True
@@ -69,7 +68,10 @@ class PropertyListing(Listing):
 
 
 class PropertyIECli:
-    def search(config=None):
+    def search(self, config=None) -> list:
+        if config is None:
+            return []
+
         results = []
 
         page = 0

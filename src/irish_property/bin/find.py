@@ -5,7 +5,7 @@ from irish_property.settings import get_configs
 
 def main():
     for config in get_configs():
-        listings = get_listings(config=config)
+        listings = get_listings(config)
         logger.info(f"Got {len(listings)} listings for config: {config.NAME.value}")
         for listing in listings:
             logger.info(
