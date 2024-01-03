@@ -14,7 +14,7 @@ setup(
     name="irish-property",
     description="Irish property buy / rent helper",
     long_description="Irish property buy / rent helper",
-    version="0.0.1",
+    version="0.0.2",
     python_requires=">=3.5",
     author="Robert Lucey",
     url="https://github.com/RobertLucey/irish_property",
